@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_member_form" model="ir.ui.view">
+        <field name="name">investment.club.member.form</field>
+        <field name="model">investment.club.member</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="acpartner_id"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="gender" invisible="context.get('hide_gender')"/>
+                            <field name="note"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_member_kanban" model="ir.ui.view">
+        <field name="name">investment.club.member.kanban</field>
+        <field name="model">investment.club.member</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="note"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_details">
+                                <ul>
+                                    <li>
+                                        Name:
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        Age:
+                                        <field name="age"/>
+                                    </li>
+                                    <li>
+                                        Gender:
+                                        <field name="gender"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_member_tree" model="ir.ui.view">
+        <field name="name">investment.club.member.tree</field>
+        <field name="model">investment.club.member</field>
+        <field name="arch" type="xml">
+            <tree expand="1">
+                <field name="name"/>
+                <field name="acpartner_id"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="note"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_member_search" model="ir.ui.view">
+        <field name="name">investment.club.member.search</field>
+        <field name="model">investment.club.member</field>
+        <field name="arch" type="xml">
+            <search string="Members">
+                <field name="name"/>
+                <field name="note"/>
+                <separator/>
+                <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/>
+                <filter string="Female" name="female" domain="[('gender', '=', 'female')]"/>
+                <filter string="Others" name="others" domain="[('gender', '=', 'others')]"/>
+                <group expand="1" string="Group By...">
+                    <filter string="Gender" name="gender" context="{'group_by':'gender'}"/>
+                    <filter string="Member Name" name="member_name" context="{'group_by':'name'}"/>
+                    <filter string="Accountability Partner" name="acpartner_id" context="{'group_by':'acpartner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_investment_club_member" model="ir.actions.act_window">
+        <field name="name">Members</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">investment.club.member</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'search_default_responsible_id': 1, 'search_default_male': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first member!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_investment_club_root"
+              name="Investment Club"
+              sequence="10"/>
+
+    <menuitem id="menu_member_root"
+              name="Members"
+              parent="menu_investment_club_root"
+              sequence="10"/>
+
+    <menuitem id="menu_member"
+              name="Members"
+              parent="menu_member_root"
+              action="action_investment_club_member"
+              sequence="10"/>
+
+
+</odoo>
